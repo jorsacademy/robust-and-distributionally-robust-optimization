@@ -102,10 +102,10 @@ def solve_ellipsoidal_robust(
         constraints=[{"type": "ineq", "fun": feasibility}],
         options={"ftol": 1e-10, "maxiter": 2000, "disp": False},
     )
-    if not result.success:
-        raise RuntimeError(f"Ellipsoidal robust solve failed: {result.message}")
-
     x = np.asarray(result.x)
+    _, _, checked_lhs = robust_consumption(x, radius, instance)
+    if not result.success and checked_lhs > instance.capacity + 1e-7:
+        raise RuntimeError(f"Ellipsoidal robust solve failed: {result.message}")
     nominal, protection, worst = robust_consumption(x, radius, instance)
     return EllipsoidalResult(
         radius=float(radius),
