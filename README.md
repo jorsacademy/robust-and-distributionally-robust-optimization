@@ -17,6 +17,8 @@ The central research question is:
 |---|---|---|
 | Budgeted robust optimization | Bertsimas-Sim cardinality/budget set | Production planning under uncertain resource consumption |
 | Wasserstein DRO | Finite-support 1-Wasserstein ambiguity set | Newsvendor under demand-distribution uncertainty |
+| Ellipsoidal robust optimization | Euclidean uncertainty set with SOC-type reformulation | Production under uncertain resource coefficients |
+| Gaussian chance constraints | Exact normal deterministic equivalent | Production with probabilistic resource-capacity guarantee |
 
 The implementations deliberately separate three quantities that are often conflated:
 
@@ -57,6 +59,8 @@ Python 3.10+ is supported. NumPy and SciPy/HiGHS are sufficient for all committe
 ```bash
 python -m robustopt.budgeted_production
 python -m robustopt.wasserstein_newsvendor
+python -m robustopt.ellipsoidal_production
+python -m robustopt.gaussian_chance_production
 ```
 
 ## Research standard
@@ -77,9 +81,8 @@ A more conservative objective is not automatically a better decision. Robustness
 
 Planned extensions include:
 
-- ellipsoidal robust SOCP formulations;
 - adjustable robust optimization;
-- chance constraints and scenario approximation;
+- scenario approximation for chance constraints;
 - moment-based DRO;
 - phi-divergence DRO;
 - conformal uncertainty sets;
