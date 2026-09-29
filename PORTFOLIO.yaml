@@ -1,0 +1,14 @@
+schema_version: 1
+repository: robust-and-distributionally-robust-optimization
+role: umbrella
+axis: methodology
+area: robust-distributionally-robust-optimization
+status: active
+owner: jorsacademy
+projects:
+  - budgeted-robust-production
+  - wasserstein-dro-newsvendor
+conventions:
+  provenance_records: false
+  reproducibility_expected: true
+  benchmark_assumptions_documented: true
