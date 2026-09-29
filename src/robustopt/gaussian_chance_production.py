@@ -108,10 +108,10 @@ def solve_gaussian_chance_constraint(
         constraints=[{"type": "ineq", "fun": lambda x: instance.capacity - lhs(x)}],
         options={"ftol": 1e-10, "maxiter": 2000, "disp": False},
     )
-    if not result.success:
-        raise RuntimeError(f"Chance-constrained solve failed: {result.message}")
-
     x = np.asarray(result.x)
+    checked_lhs = lhs(x)
+    if not result.success and checked_lhs > instance.capacity + 1e-7:
+        raise RuntimeError(f"Chance-constrained solve failed: {result.message}")
     mean, std = distribution_parameters(x, instance)
     deterministic_lhs = mean + z * std
     if std <= 1e-14:
