@@ -3,7 +3,7 @@
 <!-- portfolio-umbrella:start -->
 ## Portfolio role
 
-This repository is the primary Jors Academy methodology umbrella for robust optimization (RO), distributionally robust optimization (DRO), and data-driven uncertainty sets. It provides transparent reference implementations and out-of-sample evaluation patterns that complement application-specific robust models elsewhere in the portfolio.
+This repository is the primary Jors Academy methodology umbrella for robust optimization (RO), distributionally robust optimization (DRO), data-driven uncertainty sets, and adjacent uncertainty models used for comparison. It provides transparent reference implementations and out-of-sample evaluation patterns that complement application-specific robust models elsewhere in the portfolio.
 
 <!-- portfolio-umbrella:end -->
 
@@ -18,7 +18,7 @@ The central research question is:
 | Budgeted robust optimization | Bertsimas-Sim cardinality/budget set | Production planning under uncertain resource consumption |
 | Wasserstein DRO | Finite-support 1-Wasserstein ambiguity set | Newsvendor under demand-distribution uncertainty |
 | Ellipsoidal robust optimization | Euclidean uncertainty set with SOC-type reformulation | Production under uncertain resource coefficients |
-| Gaussian chance constraints | Exact normal deterministic equivalent | Production with probabilistic resource-capacity guarantee |
+| Gaussian chance constraints | Exact normal deterministic equivalent | Production with probabilistic resource-capacity guarantee |\n| Adaptive Wasserstein DRO | Sequential empirical update + shrinking Wasserstein radius | Data-adaptive newsvendor under distribution shift |\n| Fuzzy / possibilistic optimization | Triangular fuzzy capacity with possibility and necessity cuts | Production planning under non-probabilistic uncertainty |
 
 The implementations deliberately separate three quantities that are often conflated:
 
@@ -60,7 +60,7 @@ Python 3.10+ is supported. NumPy and SciPy/HiGHS are sufficient for all committe
 python -m robustopt.budgeted_production
 python -m robustopt.wasserstein_newsvendor
 python -m robustopt.ellipsoidal_production
-python -m robustopt.gaussian_chance_production
+python -m robustopt.gaussian_chance_production\npython -m robustopt.adaptive_wasserstein_newsvendor\npython -m robustopt.fuzzy_possibilistic_production
 ```
 
 ## Research standard
@@ -73,7 +73,7 @@ Every benchmark should state:
 - the deterministic or tractable reformulation used;
 - the price of robustness;
 - an out-of-sample evaluation protocol;
-- sensitivity to the robustness radius/budget.
+- sensitivity to the robustness radius/budget;\n- whether uncertainty sets or ambiguity sets are fixed or updated as data arrive;\n- for fuzzy models, the declared membership function and the possibility/necessity semantics used.
 
 A more conservative objective is not automatically a better decision. Robustness is evaluated by the trade-off among nominal performance, tail/worst-case performance, feasibility, and stability under distribution shift.
 
