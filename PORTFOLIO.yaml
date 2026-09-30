@@ -9,7 +9,7 @@ projects:
   - budgeted-robust-production
   - wasserstein-dro-newsvendor
   - ellipsoidal-robust-production
-  - gaussian-chance-constrained-production
+  - gaussian-chance-constrained-production\n  - adaptive-wasserstein-dro-newsvendor\n  - fuzzy-possibilistic-production-planning
 conventions:
   provenance_records: false
   reproducibility_expected: true
