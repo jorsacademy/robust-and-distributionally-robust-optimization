@@ -92,3 +92,59 @@ def test_profit_falls_as_service_confidence_tightens():
     alphas = (0.5, 0.2, 0.1, 0.05)
     profits = [solve_gaussian_chance_constraint(alpha).profit for alpha in alphas]
     assert all(a + 1e-6 >= b for a, b in zip(profits, profits[1:]))
+
+
+from robustopt.adaptive_wasserstein_newsvendor import (
+    ambiguity_radius,
+    example_data as adaptive_example_data,
+    solve_adaptive_wasserstein_newsvendor,
+)
+from robustopt.fuzzy_possibilistic_production import (
+    solve_fuzzy_production,
+    triangular_effective_capacity,
+)
+
+
+def test_adaptive_dro_radius_shrinks_with_sample_size():
+    radii = [ambiguity_radius(n, scale=2.0, floor=0.1) for n in range(4, 12)]
+    assert all(a >= b - 1e-12 for a, b in zip(radii, radii[1:]))
+
+
+def test_adaptive_dro_updates_sample_size_and_returns_finite_values():
+    initial, arriving, support = adaptive_example_data()
+    steps = solve_adaptive_wasserstein_newsvendor(
+        initial,
+        arriving,
+        support,
+        radius_scale=2.0,
+        radius_floor=0.1,
+    )
+    assert len(steps) == len(arriving)
+    assert [s.sample_size for s in steps] == list(
+        range(len(initial) + 1, len(initial) + len(arriving) + 1)
+    )
+    assert all(np.isfinite(s.worst_case_cost) for s in steps)
+    assert all(s.epsilon >= 0.1 for s in steps)
+
+
+def test_fuzzy_necessity_is_more_conservative_than_possibility():
+    for level in (0.25, 0.5, 0.75, 1.0):
+        nec = triangular_effective_capacity(12.0, 18.0, 24.0, level, "necessity")
+        pos = triangular_effective_capacity(12.0, 18.0, 24.0, level, "possibility")
+        assert nec <= pos + 1e-12
+
+
+def test_fuzzy_production_respects_effective_capacity():
+    for semantics in ("necessity", "possibility"):
+        for level in (0.25, 0.5, 0.75, 1.0):
+            result = solve_fuzzy_production(level, semantics)
+            assert result.resource_consumption <= result.effective_capacity + 1e-8
+
+
+def test_fuzzy_profit_is_nonincreasing_as_confidence_tightens():
+    for semantics in ("necessity", "possibility"):
+        profits = [
+            solve_fuzzy_production(level, semantics).profit
+            for level in (0.25, 0.5, 0.75, 1.0)
+        ]
+        assert all(a + 1e-8 >= b for a, b in zip(profits, profits[1:]))
