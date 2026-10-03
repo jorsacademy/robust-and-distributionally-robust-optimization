@@ -82,6 +82,8 @@ A more conservative objective is not automatically a better decision. Robustness
 Planned extensions include:
 
 - adjustable robust optimization;
+- multi-stage robust optimization;
+- adjustable robust network-flow benchmark;
 - scenario approximation for chance constraints;
 - moment-based DRO;
 - phi-divergence DRO;
